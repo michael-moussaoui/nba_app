@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Roboto+Mono:wght@300&display=swap");
+
+body {
+	background: #212121;
+	font-family: "Roboto Mono", monospace;
+}
+
+h1 {
+	font-family: "Permanent Marker", cursive;
+	color: #4361ee;
+}
+#searchForm {
+	margin-bottom: 3rem;
+}
+
+#btnSearch {
+	/* border: 1px solid #4361ee; */
+	border: none;
+	border-radius: 5px;
+	color: #4361ee;
+	font-weight: bold;
+	margin-bottom: 2rem;
+}
+
+#btnSearch:hover {
+	box-shadow: 1px 1px 2px 0px rgba(67, 97, 238, 1);
+	background: #4361ee;
+	color: #212121;
+	border: none;
+}
+
+#averagePlayer {
+	display: flex;
+	flex-direction: row;
+}
+
+h3 {
+	font-size: 1.3em;
+}
+.cardPlayer {
+	width: 30%;
+	margin-left: 1rem;
+	background: #000;
+	border-radius: 5px;
+	opacity: 0.7;
+	border: 2px solid #4361ee;
+	box-shadow: 3px 3px 5px 0px rgba(67, 97, 238, 1);
+	color: #fff;
+	margin: 2rem;
+}
+.containerImg {
+	display: flex;
+	flex-direction: row;
+}
+
+.cardImg {
+	width: 100px !important;
+	height: 150px !important;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+	/* border: 2px solid green; */
+}
+
+table {
+	width: 95%;
+	margin: 0 auto;
+}
+
+thead {
+	background: #4361ee;
+}
+
+td {
+	color: #fff;
+}
+
+#myChart {
+	border: 2px solid #4361ee;
+	margin: 2rem auto;
+}
