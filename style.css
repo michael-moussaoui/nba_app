@@ -6,30 +6,123 @@ body {
 	font-family: "Roboto Mono", monospace;
 }
 
+.containerTitle {
+	display: flex;
+	padding-top: 2rem;
+	padding-left: 2rem;
+}
+
 h1 {
+	margin-top: 3rem;
+	margin-bottom: 5rem;
+	font-size: 2.9rem;
 	font-family: "Permanent Marker", cursive;
 	color: #4361ee;
 }
+.logo {
+	width: 150px;
+	height: 150px;
+}
 #searchForm {
-	margin-bottom: 3rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 1.5rem;
+	width: 50%;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+.inputbox {
+	position: relative;
+	width: 196px;
+}
+
+.inputbox input {
+	position: relative;
+	width: 100%;
+	padding: 20px 10px 10px;
+	background: transparent;
+	outline: none;
+	box-shadow: none;
+	border: none;
+	color: #23242a;
+	font-size: 1.1em;
+	letter-spacing: 0.05em;
+	transition: 0.5s;
+	z-index: 10;
+}
+
+.inputbox span {
+	position: absolute;
+	left: 0;
+	padding: 20px 10px 10px;
+	font-size: 1.1em;
+	color: #8f8f8f;
+	letter-spacing: 00.05em;
+	transition: 0.5s;
+	pointer-events: none;
+}
+
+.inputbox input:valid ~ span,
+.inputbox input:focus ~ span {
+	color: #4361ee;
+	transform: translateX(-10px) translateY(-34px);
+	font-size: 0, 75em;
+}
+
+.inputbox i {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 2px;
+	background: #4361ee;
+	border-radius: 4px;
+	transition: 0.5s;
+	pointer-events: none;
+	z-index: 9;
+}
+
+.inputbox input:valid ~ i,
+.inputbox input:focus ~ i {
+	height: 44px;
+}
+
+#inputPlayer {
+	border-radius: 5px;
 }
 
 #btnSearch {
 	/* border: 1px solid #4361ee; */
+	margin-top: 1rem;
+	padding: 1.1em 2em;
 	border: none;
 	border-radius: 5px;
 	color: #4361ee;
 	font-weight: bold;
-	margin-bottom: 2rem;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease 0s;
+	outline: none;
+	cursor: pointer;
 }
 
 #btnSearch:hover {
-	box-shadow: 1px 1px 2px 0px rgba(67, 97, 238, 1);
+	box-shadow: 2px 6px 6px 0px rgba(67, 97, 238, 0.7);
 	background: #4361ee;
 	color: #212121;
 	border: none;
+	transform: translateY(-1px);
 }
 
+.selectContainer {
+	visibility: hidden;
+}
+
+#mainContainer {
+	display: flex;
+	flex-direction: row;
+}
 #averagePlayer {
 	display: flex;
 	flex-direction: row;
@@ -38,16 +131,25 @@ h1 {
 h3 {
 	font-size: 1.3em;
 }
+.swiper {
+	margin-left: 0;
+	padding-left: 0;
+}
 .cardPlayer {
-	width: 30%;
+	width: 280px;
+	height: auto;
 	margin-left: 1rem;
 	background: #000;
 	border-radius: 5px;
 	opacity: 0.7;
-	border: 2px solid #4361ee;
-	box-shadow: 3px 3px 5px 0px rgba(67, 97, 238, 1);
+	border: 1px solid #4361ee;
 	color: #fff;
 	margin: 2rem;
+	transition: ease 0.6s;
+}
+
+.cardPlayer:hover {
+	box-shadow: 3px 3px 5px 0px rgba(67, 97, 238, 1);
 }
 .containerImg {
 	display: flex;
@@ -55,28 +157,59 @@ h3 {
 }
 
 .cardImg {
-	width: 100px !important;
-	height: 150px !important;
+	width: 150px !important;
+	height: 200px !important;
 	position: relative;
 	left: 50%;
 	transform: translateX(-50%);
 	/* border: 2px solid green; */
 }
 
+#resultContainer {
+	color: #fff;
+	text-align: center;
+	font-size: 1.3rem;
+}
+
 table {
 	width: 95%;
 	margin: 0 auto;
+	border: 1px solid #4361ee;
+	border-radius: 4px;
 }
 
 thead {
+	text-align: center;
 	background: #4361ee;
+	border: 1px solid #4361ee;
+	font-size: 1.3rem;
+	box-shadow: 4px 6px 5px 0px rgba(0, 0, 0, 1);
 }
 
 td {
 	color: #fff;
+	text-align: center;
+	border: 1px solid #4361ee;
 }
 
-#myChart {
-	border: 2px solid #4361ee;
+.containerCanvas {
+	width: 90%;
+	position: relative;
+	border: 4px solid rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	box-shadow: 4px 6px 5px 0px rgba(0, 0, 0, 1);
+}
+
+#myChart,
+#myChartRebounds,
+#myChartAssists {
+	border: 1px solid #4361ee;
 	margin: 2rem auto;
+	border-radius: 5px;
+	box-shadow: 10px 10px 6px 0px rgba(0, 0, 0, 1);
+}
+#mychart:hover {
+	box-shadow: 3px 3px 5px 0px rgba(67, 97, 238, 1);
 }

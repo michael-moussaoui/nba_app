@@ -1,17 +1,4 @@
 module.exports = {
-	publishers: [
-		{
-			name: "@electron-forge/publisher-github",
-			config: {
-				repository: {
-					owner: "michael-moussaoui",
-					name: "electron-publish-nba_app",
-				},
-				prerelease: false,
-				draft: true,
-			},
-		},
-	],
 	packagerConfig: {},
 	rebuildConfig: {},
 	makers: [
@@ -33,6 +20,20 @@ module.exports = {
 		{
 			name: "@electron-forge/maker-rpm",
 			config: {},
+		},
+	],
+	publishers: [
+		{
+			name: "@electron-forge/publisher-github",
+			config: {
+				repository: {
+					owner: "michael-moussaoui",
+					name: "nba_app",
+				},
+				authToken: "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",
+				prerelease: false,
+				draft: true,
+			},
 		},
 	],
 };

@@ -1,5 +1,51 @@
 const axios = require("axios");
 
+// const playerId = "237";
+// const apiKey = "your_api_key";
+// const endpoint = `https://www.balldontlie.io/api/v1/stats?player_ids[]=${playerId}&start_date=2022-10-20&end_date=2023-01-01`;
+
+// fetch(endpoint, {
+// 	headers: {
+// 		Accept: "application/json",
+// 		Authorization: `Bearer ${apiKey}`,
+// 	},
+// })
+// 	.then((response) => response.json())
+// 	.then((data) => {
+// 		const datas = data.data;
+// 		const listPoints = datas.map((data) => data.pts);
+// 		const listRebounds = datas.map((data) => data.reb);
+// 		const listAssists = datas.map((data) => data.ast);
+
+// 		console.log(datas);
+// 		console.log(listPoints);
+// 		console.log(listRebounds);
+// 		console.log(listAssists);
+// 	})
+// 	.catch((error) => {
+// 		console.error(error);
+// 	});
+// Veuillez noter que vous devez remplacer playerId par l'ID du joueur pour lequel vous souhaitez obtenir les données et apiKey par votre propre clé d'API. De plus, vous pouvez ajuster les dates de début et de fin en fonction de la période pour laquelle vous souhaitez obtenir les données.
+
+// async function getPlayersStats(playerId) {
+// 	console.log(playerId);
+// 	try {
+// 		const response = await axios.get(
+// 			`https://www.balldontlie.io/api/v1/stats?player_ids[]=237&start_date=2022-10-01&end_date=2023-06-01&group[]=game.id&sum[]=pts `
+// 		);
+// 		{
+// 			const playerStats = response.data.data;
+// 			console.log(playerStats);
+
+// 			return playerStats;
+// 		}
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// }
+
+// getPlayersStats();
+
 // const { Chart } = require("chart.js");
 
 // async function getDataAveragesPlayer(playerId) {
@@ -11,32 +57,32 @@ const axios = require("axios");
 // 		{
 // 			const playerAverage = response.data.data[0];
 // 			console.log(playerAverage);
-// 			const ctx = document.getElementById("myChart").getContext("2d");
-// 			const myChart = new Chart(ctx, {
-// 				type: "bar",
-// 				data: {
-// 					labels: Object.keys(playerAverage),
-// 					datasets: [
-// 						{
-// 							label: "Number of GitHub Stars",
-// 							data: Object.values(playerAverage),
-// 						},
-// 					],
-// 				},
-// 				options: {
-// 					backgroundColor: [
-// 						"rgba(255, 99, 132, 0.5)", // Bar 1
-// 						"rgba(54, 162, 235, 0.5)", // Bar 2
-// 						"rgba(255, 206, 86, 0.5)", // Bar 3
-// 						"rgba(75, 192, 192, 0.5)", // Bar 4
-// 						"rgba(153, 102, 255, 0.5)", // Bar 5
-// 						"rgba(255, 159, 64, 0.5)", // Bar 6
-// 					],
-// 					borderWidth: 2,
-// 					borderColor: "black",
-// 				},
-// 			});
-// 		}
+const ctx = document.getElementById("myChart").getContext("2d");
+const myChart = new Chart(ctx, {
+	type: "bar",
+	data: {
+		labels: "",
+		datasets: [
+			{
+				label: "Number of GitHub Stars",
+				data: listPoints,
+			},
+		],
+	},
+	options: {
+		backgroundColor: [
+			"rgba(255, 99, 132, 0.5)", // Bar 1
+			"rgba(54, 162, 235, 0.5)", // Bar 2
+			"rgba(255, 206, 86, 0.5)", // Bar 3
+			"rgba(75, 192, 192, 0.5)", // Bar 4
+			"rgba(153, 102, 255, 0.5)", // Bar 5
+			"rgba(255, 159, 64, 0.5)", // Bar 6
+		],
+		borderWidth: 2,
+		borderColor: "black",
+	},
+});
+
 // 	} catch (error) {
 // 		console.log(error);
 // 	}
