@@ -1,293 +1,318 @@
-const { dialog, Menu } = require("electron");
 const axios = require("axios");
-const { log } = require("builder-util");
 
-const h1 = document.querySelector("text-center");
-const btnValidate = document.getElementById("btnValidate");
-const listPlayers = document.getElementById("listPlayers");
-// const cardPlayer = document.querySelector(".cardPlayer");
-const resultContainer = document.getElementById("resultContainer");
-const mainContainer = document.getElementById("mainContainer");
-const swiper = document.querySelector(".mySwiper");
-const rowStats = document.getElementById("trStats");
-const firstTd = document.querySelector(".firstTd");
-let namePlayer = document.querySelector(".namePlayerStat");
+// // 1. GET request using fetch()
+// fetch("https://www.balldontlie.io/api/v1/players")
+// 	// Converting received data to JSON
+// 	.then((response) => response.json())
+// 	.then((json) => {
+// 		// 2. Create a variable to store HTML table headers
+// 		let li = `<tr><th>ID</th><th>first_name</th><th>height_feet</th><th>height_inches</th> <th>last_name</th><th>position</th><th>im lazy...</th></tr>`;
+// 		console.log(json.data);
+// 		// 3. Loop through each data and add a table row
+// 		console - console.log(json.data);
+// 		json.data.forEach((user) => {
+// 			li += `<tr>
+//         <td>${user.id}</td>
+//         <td>${user.first_name} </td>
+//         <td>${user.height_feet}</td>
+//         <td>${user.height_inches}</td>
+//         <td>${user.last_name}</td>
+//         <td>${user.position}</td>
+//         <td>${user.team.id}</td>
+//         <td>${user.team.abbreviation}</td>
+//         <td>${user.team.city}</td>
+//         <td>${user.team.conference}</td>
+//         <td>${user.team.division}</td>
+//         <td>${user.team.full_name}</td>
+//         <td>${user.team.name}</td>
+//       </tr>`;
+// 		});
 
-let myChart = null;
-let myChartRebounds = null;
-let myChartAssists = null;
+// 		// 4. DOM Display result
+// 		document.getElementById("users").innerHTML = li;
+// 	});
 
-const searchForm = document.querySelector("#searchForm");
-const inputPlayer = document.querySelector("#inputPlayer");
+// const playerId = "237";
+// const apiKey = "your_api_key";
+// const endpoint = `https://www.balldontlie.io/api/v1/stats?player_ids[]=${playerId}&start_date=2022-10-20&end_date=2023-01-01`;
 
-function searchPlayer() {
-	searchForm.addEventListener("submit", (e) => {
-		e.preventDefault();
+// fetch(endpoint, {
+// 	headers: {
+// 		Accept: "application/json",
+// 		Authorization: `Bearer ${apiKey}`,
+// 	},
+// })
+// 	.then((response) => response.json())
+// 	.then((data) => {
+// 		const datas = data.data;
+// 		const listPoints = datas.map((data) => data.pts);
+// 		const listRebounds = datas.map((data) => data.reb);
+// 		const listAssists = datas.map((data) => data.ast);
 
-		const playerName = inputPlayer.value;
-		axios
-			.get(
-				`https://www.balldontlie.io/api/v1/players?search=${playerName}&per_page=100`
-			)
-			.then(async (res) => {
-				const players = res.data.data;
-				console.log(players);
+// 		console.log(datas);
+// 		console.log(listPoints);
+// 		console.log(listRebounds);
+// 		console.log(listAssists);
+// 	})
+// 	.catch((error) => {
+// 		console.error(error);
+// 	});
+// Veuillez noter que vous devez remplacer playerId par l'ID du joueur pour lequel vous souhaitez obtenir les données et apiKey par votre propre clé d'API. De plus, vous pouvez ajuster les dates de début et de fin en fonction de la période pour laquelle vous souhaitez obtenir les données.
 
-				await getPlayerStats(players[0].id);
-				await getAveragesPlayer(players[0].id);
+// async function getPlayersStats(playerId) {
+// 	console.log(playerId);
+// 	try {
+// 		const response = await axios.get(
+// 			`https://www.balldontlie.io/api/v1/stats?player_ids[]=237&start_date=2022-10-01&end_date=2023-06-01&group[]=game.id&sum[]=pts `
+// 		);
+// 		{
+// 			const playerStats = response.data.data;
+// 			console.log(playerStats);
 
-				console.log(players[0].team.abbreviation);
+// 			return playerStats;
+// 		}
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// }
 
-				//On ajoute les joueurs trouvés au select
-				let options = players;
+// getPlayersStats();
 
-				options.forEach((option) => {
-					const newOption = document.createElement("option");
+// const { Chart } = require("chart.js");
 
-					newOption.value = option.last_name;
-					newOption.text = option.first_name + " " + option.last_name;
-					listPlayers.appendChild(newOption);
-				});
+// async function getDataAveragesPlayer(playerId) {
+// 	console.log(playerId);
+// 	try {
+// 		const response = await axios.get(
+// 			`https://www.balldontlie.io/api/v1/season_averages?seasons[]=2022&player_ids[]=${playerId}`
+// 		);
+// 		{
+// 			const playerAverage = response.data.data[0];
+// 			console.log(playerAverage);
+// const ctx = document.getElementById("myChart").getContext("2d");
+// const myChart = new Chart(ctx, {
+// 	type: "bar",
+// 	data: {
+// 		labels: "",
+// 		datasets: [
+// 			{
+// 				label: "Number of GitHub Stars",
+// 				data: listPoints,
+// 			},
+// 		],
+// 	},
+// 	options: {
+// 		backgroundColor: [
+// 			"rgba(255, 99, 132, 0.5)", // Bar 1
+// 			"rgba(54, 162, 235, 0.5)", // Bar 2
+// 			"rgba(255, 206, 86, 0.5)", // Bar 3
+// 			"rgba(75, 192, 192, 0.5)", // Bar 4
+// 			"rgba(153, 102, 255, 0.5)", // Bar 5
+// 			"rgba(255, 159, 64, 0.5)", // Bar 6
+// 		],
+// 		borderWidth: 2,
+// 		borderColor: "black",
+// 	},
+// });
 
-				let output;
-				let namePlayerName = "";
-				players.forEach((player) => {
-					//Récupération du nom en abbréviation de l'équipe du joueur
-					let namePlayerTeam = player.team.abbreviation;
-					//Récupération du nom du joueur
-					namePlayerName = `${player.first_name} ${player.last_name}`;
-					console.log(namePlayerName);
-					console.log(player);
-					output += `
-					<swiper-slide>
-					<div class="cardPlayer">
-			          <div class="cardBody ">
-				        <h3 id="namePlayerCard" class="text-center">${namePlayerName}</h3>
-			           </div>
-			         <div class="containerImg">
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// }
+// getDataAveragesPlayer();
 
-					 <img class="cardImg" src="./renderer/images/${namePlayerTeam}.webp"/>
-					 </div>
-		            </div>
-					</swiper-slide>`;
+// // Récupérer les données de l'API balldontlie.io
+// const API_URL =
+// 	"https://www.balldontlie.io/api/v1/stats?player_ids[]=531&player_ids[]=2";
+// const joueur1Id = 1;
+// const joueur2Id = 2;
 
-					const cardPlayer = document.querySelector(".cardPlayer");
-					// cardPlayer.addEventListener("click", () => {
-					// 	console.log("test");
-					// });
-					console.log(cardPlayer);
-				});
+// fetch(API_URL)
+// 	.then((res) => res.json())
+// 	.then((data) => {
+// 		console.log(data);
+// 		let joueur1Points = 0;
+// 		let joueur2Points = 0;
 
-				// mainContainer.innerHTML = output;
-				swiper.innerHTML = output;
+// 		for (const item of data) {
+// 			if (item.player_id === joueur1Id) {
+// 				joueur1Points = item.pts;
+// 			} else if (item.player_id === joueur2Id) {
+// 				joueur2Points = item.pts;
+// 			}
+// 		}
 
-				console.log(namePlayerName);
+// 		// Créer le graphique avec Chart.js
+// 		const ctx = document.getElementById("myChart").getContext("2d");
+// 		const chart = new Chart(ctx, {
+// 			type: "bar",
+// 			data: {
+// 				labels: ["Joueur 1", "Joueur 2"],
+// 				datasets: [
+// 					{
+// 						label: "Points marqués",
+// 						data: [joueur1Points, joueur2Points],
+// 						backgroundColor: [
+// 							"rgba(255, 99, 132, 0.2)",
+// 							"rgba(54, 162, 235, 0.2)",
+// 						],
+// 						borderColor: [
+// 							"rgba(255, 99, 132, 1)",
+// 							"rgba(54, 162, 235, 1)",
+// 						],
+// 						borderWidth: 1,
+// 					},
+// 				],
+// 			},
+// 			options: {
+// 				scales: {
+// 					yAxes: [
+// 						{
+// 							ticks: {
+// 								beginAtZero: true,
+// 							},
+// 						},
+// 					],
+// 				},
+// 			},
+// 		});
+// 	});
 
-				resultContainer.innerHTML = namePlayerName;
+// const ctx = document.getElementById("myChart").getContext("2d");
+// const myChart = new Chart(ctx, {
+// 	type: "bar",
+// 	data: {
+// 		labels: [], // array of labels
+// 		datasets: [
+// 			{
+// 				label: "", //dataset label
+// 				data: [], //array of data values
+// 			},
+// 		],
+// 	},
+// });
 
-				//namePlayer.appendChild(namePlayerName);
-				// namePlayer = document.createTextNode(namePlayerName);
-			})
-			.catch((err) => console.log(err));
-	});
-}
+// var ctx = document.getElementById('myChart').getContext('2d');
+// var myChart = new Chart(ctx, {
+//     type: 'bar',
+//     data: {
+//         labels: [], // array of labels
+//         datasets: [{
+//             label: '', // dataset label
+//             data: [], // array of data values
+//             backgroundColor: [], // array of background colors
+//             borderColor: [], // array of border colors
+//             borderWidth: 1
+//         }]
+//     },
+//     options: {
+//         scales: {
+//             yAxes: [{
+//                 ticks: {
+//                     beginAtZero: true
+//                 }
+//             }]
+//         }
+//     }
+// });
 
-searchPlayer();
+// Fetch data from Balldontlie API and update chart
 
-async function getPlayerStats(playerId) {
-	console.log(playerId);
-	try {
-		const response = await axios.get(
-			`https://www.balldontlie.io/api/v1/stats?seasons[]=2022&player_ids[]=${playerId}&per_page=20`
-		);
-		{
-			const playerStats = response.data.data;
+// fetch("https://www.balldontlie.io/api/v1/stats")
+// 	.then((response) => response.json())
+// 	.then((data) => {
+// 		// Extract the labels and data values from the API response
+// 		data.forEach((stat) => {
+// 			myChart.data.labels.push(
+// 				stat.player.first_name + " " + stat.player.last_name
+// 			);
+// 			myChart.data.datasets[0].data.push(stat.pts);
+// 		});
 
-			console.log(playerStats);
+// 		// Generate random background and border colors for each bar
+// 		for (var i = 0; i < myChart.data.labels.length; i++) {
+// 			myChart.data.datasets[0].backgroundColor.push(getRandomColor());
+// 			myChart.data.datasets[0].borderColor.push(getRandomColor());
+// 		}
 
-			const listPoints = playerStats.map((stat) => stat.pts);
-			const listRebounds = playerStats.map((stat) => stat.reb);
-			const listAssists = playerStats.map((stat) => stat.ast);
-			const listDates = playerStats.map((stat) =>
-				// Suppression du format heure avec la methode slice pour garder uniquement la date
-				stat.game.date.slice(0, -14)
-			);
+// 		myChart.update();
+// 	});
 
-			console.log(listPoints);
-			console.log(listRebounds);
-			console.log(listAssists);
-			console.log(listDates);
+// // Generate a random color
+// function getRandomColor() {
+// 	var letters = "0123456789ABCDEF";
+// 	var color = "#";
+// 	for (var i = 0; i < 6; i++) {
+// 		color += letters[Math.floor(Math.random() * 16)];
+// 	}
+// 	return color;
+// }
 
-			const ctx = document.getElementById("myChart").getContext("2d");
-			if (myChart != null) {
-				myChart.destroy();
-			}
+console.log("test");
 
-			myChart = new Chart(ctx, {
-				type: "line",
-				data: {
-					labels: listDates,
-					datasets: [
-						{
-							label: "Points player",
-							data: listPoints,
-						},
-					],
-				},
-				options: {
-					backgroundColor: [
-						"rgba(255, 99, 132, 0.5)", // Bar 1
-						"rgba(54, 162, 235, 0.5)", // Bar 2
-						"rgba(255, 206, 86, 0.5)", // Bar 3
-						"rgba(75, 192, 192, 0.5)", // Bar 4
-						"rgba(153, 102, 255, 0.5)", // Bar 5
-						"rgba(255, 159, 64, 0.5)", // Bar 6
-					],
-					borderWidth: 2,
-					borderColor: "black",
-				},
-			});
-			const ctxR = document
-				.getElementById("myChartRebounds")
-				.getContext("2d");
-			if (myChartRebounds != null) {
-				myChartRebounds.destroy();
-			}
+// Fonction pour effectuer une requête API
+// async function getData(url) {
+// 	const response = await fetch(url);
+// 	const data = await response.json();
+// 	return data;
+// }
 
-			myChartRebounds = new Chart(ctxR, {
-				type: "line",
-				data: {
-					labels: listDates,
-					datasets: [
-						{
-							label: "Rebounds player",
-							data: listRebounds,
-						},
-					],
-				},
-				options: {
-					backgroundColor: [
-						"rgba(255, 99, 132, 0.5)", // Bar 1
-						"rgba(54, 162, 235, 0.5)", // Bar 2
-						"rgba(255, 206, 86, 0.5)", // Bar 3
-						"rgba(75, 192, 192, 0.5)", // Bar 4
-						"rgba(153, 102, 255, 0.5)", // Bar 5
-						"rgba(255, 159, 64, 0.5)", // Bar 6
-					],
-					borderWidth: 2,
-					borderColor: "black",
-				},
-			});
+// // ID des joueurs à comparer
+// const player1 = 123;
+// const player2 = 456;
 
-			const ctxA = document
-				.getElementById("myChartAssists")
-				.getContext("2d");
-			if (myChartAssists != null) {
-				myChartAssists.destroy();
-			}
-			myChartAssists = new Chart(ctxA, {
-				type: "line",
-				data: {
-					labels: listDates,
-					datasets: [
-						{
-							label: "Assists player",
-							data: listAssists,
-						},
-					],
-				},
-				options: {
-					backgroundColor: [
-						"rgba(255, 99, 132, 0.5)", // Bar 1
-						"rgba(54, 162, 235, 0.5)", // Bar 2
-						"rgba(255, 206, 86, 0.5)", // Bar 3
-						"rgba(75, 192, 192, 0.5)", // Bar 4
-						"rgba(153, 102, 255, 0.5)", // Bar 5
-						"rgba(255, 159, 64, 0.5)", // Bar 6
-					],
-					borderWidth: 2,
-					borderColor: "black",
-				},
-			});
+// // URL pour récupérer les points marqués par les joueurs
+// const url = `https://www.balldontlie.io/api/v1/stats?player_ids[]=${player1}&player_ids[]=${player2}&start_date=2020-01-01&end_date=2022-12-31`;
 
-			return playerStats;
-		}
-	} catch (error) {
-		console.log(error);
-	}
-}
+// // Récupération des données
+// getData(url)
+// 	.then((data) => {
+// 		// Filtrage des données pour n'obtenir que les points marqués par les joueurs
+// 		const filteredData = data.filter(
+// 			(d) => d.player_id === player1 || d.player_id === player2
+// 		);
 
-getPlayerStats();
+// 		// Regroupement des points marqués par joueur
+// 		const groupedData = filteredData.reduce((acc, curr) => {
+// 			const player =
+// 				curr.player_id === player1 ? "player1" : "player2";
+// 			acc[player] = acc[player] ? acc[player] + curr.pts : curr.pts;
+// 			return acc;
+// 		}, {});
 
-async function getAveragesPlayer(playerId) {
-	console.log(playerId);
-
-	try {
-		const response = await axios.get(
-			`https://www.balldontlie.io/api/v1/season_averages?seasons[]=2022&player_ids[]=${playerId}`
-		);
-		{
-			const playerAverage = response.data.data[0];
-			console.log(playerAverage);
-			// const ctx = document.getElementById("myChart").getContext("2d");
-			// if (myChart != null) {
-			// 	myChart.destroy();
-			// }
-
-			// myChart = new Chart(ctx, {
-			// 	type: "bar",
-			// 	data: {
-			// 		labels: Object.keys(playerAverage),
-			// 		datasets: [
-			// 			{
-			// 				label: "Stats player",
-			// 				data: Object.values(playerAverage),
-			// 			},
-			// 		],
-			// 	},
-			// 	options: {
-			// 		backgroundColor: [
-			// 			"rgba(255, 99, 132, 0.5)", // Bar 1
-			// 			"rgba(54, 162, 235, 0.5)", // Bar 2
-			// 			"rgba(255, 206, 86, 0.5)", // Bar 3
-			// 			"rgba(75, 192, 192, 0.5)", // Bar 4
-			// 			"rgba(153, 102, 255, 0.5)", // Bar 5
-			// 			"rgba(255, 159, 64, 0.5)", // Bar 6
-			// 		],
-			// 		borderWidth: 2,
-			// 		borderColor: "black",
-			// 	},
-			// });
-
-			const playersAverage = response.data.data;
-			let output1 = "";
-			playersAverage.forEach((player) => {
-				let games = player.games_played;
-				let minutes = player.min;
-				let points = player.pts;
-				let rebonds = player.reb;
-				let assists = player.ast;
-
-				output1 += `
-				
-				<td>${games}</td>
-				<td>${minutes}</td>
-				<td>${points}</td>
-				<td>${rebonds}</td>
-				<td>${assists}</td>
-				
-				`;
-			});
-
-			rowStats.innerHTML = output1;
-			console.log(output1);
-		}
-	} catch (error) {
-		console.log(error);
-	}
-}
-getAveragesPlayer();
-
-h1.addEventListener("click", () => {
-	console.log("test");
-});
+// 		// Initialisation de Chart.js
+// 		const ctx = document.getElementById("myChart").getContext("2d");
+// 		const myChart = new Chart(ctx, {
+// 			type: "bar",
+// 			data: {
+// 				labels: ["Player 1", "Player 2"],
+// 				datasets: [
+// 					{
+// 						label: "Points marqués",
+// 						data: [groupedData.player1, groupedData.player2],
+// 						backgroundColor: [
+// 							"rgba(255, 99, 132, 0.2)",
+// 							"rgba(54, 162, 235, 0.2)",
+// 						],
+// 						borderColor: [
+// 							"rgba(255, 99, 132, 1)",
+// 							"rgba(54, 162, 235, 1)",
+// 						],
+// 						borderWidth: 1,
+// 					},
+// 				],
+// 			},
+// 			options: {
+// 				scales: {
+// 					yAxes: [
+// 						{
+// 							ticks: {
+// 								beginAtZero: true,
+// 							},
+// 						},
+// 					],
+// 				},
+// 			},
+// 		});
+// 	})
+// 	.catch((error) => console.error(error));

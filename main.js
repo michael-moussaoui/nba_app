@@ -26,8 +26,6 @@ const createWindow = () => {
 	win.loadFile(path.join(__dirname, "./index.html"));
 };
 
-// app.disableHardwareAcceleration();
-
 app.whenReady().then(() => {
 	createWindow();
 
