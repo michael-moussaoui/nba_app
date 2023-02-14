@@ -1,6 +1,6 @@
 {
   "name": "nbaapp",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "nba API",
   "main": "main.js",
   "scripts": {
@@ -29,6 +29,7 @@
     "@electron-forge/publisher-github": "^6.0.4",
     "electron": "^22.2.0",
     "electron-reloader": "^1.2.3",
+    "electron-updater": "^5.3.0",
     "electron-winstaller": "^5.1.0"
   },
   "dependencies": {

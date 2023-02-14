@@ -7,6 +7,7 @@
 		
 		<title>My nba</title>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 		<link rel="stylesheet" type="text/css" href="./style.css" />
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	</head>
@@ -16,11 +17,13 @@
 	      <h1 class="text-center">MY NBA</h1>
 		  <img class="logo" src="./renderer/images/silhouette-basket.svg" alt="logo app" srcset="">
 	    </div>
+		<p id="output">Click it to see the effect in this interface.</p>
+
 		
 		<form  id="searchForm" >
 		<div class="inputbox">
-		<input type="text" id="inputPlayer" name="playerName" value=""required="required"  >
-		<span>Player name</span>
+		<input type="text" id="inputPlayer" name="playerName" value="" placeholder="Player name" required="required"  >
+		<!-- <span>Player name</span> -->
         <i></i>
 	    </div>
 		<button id="btnSearch" type="submit">Recherche</button>
@@ -36,10 +39,12 @@
 		</swiper-container>
 		
 		  </div>
+		  <div class="test123">
 		  <p id="resultContainer"></p>
 		  <p id="resultContainerBis">
 			moyenne saison en cours
 		  </p>
+		</div>
 		  <div class="containerTable">
 		  <table class="h-50">
 			<div class="ballContainer">
@@ -64,13 +69,13 @@
 		 
 		<div class="containerCanvas container text-center p-0">
 		  <div class="row justify-content-center p-0">
-		   <div class="chart col-sm-12 col-md-12 col-lg-5 text-center">
+		   <div class="chart col-sm-12 col-md-10 col-lg-5 text-center">
 			<canvas id="myChart" width="400" height="400"></canvas>
 		   </div>
-		   <div class="chart col-sm-12 col-md-12 col-lg-5 text-center ">
+		   <div class="chart col-sm-12 col-md-10 col-lg-5 text-center ">
 			<canvas id="myChartRebounds" width="400" height="400"></canvas>
 		   </div>
-		   <div class="chart col-sm-12 col-md-12 col-lg-5 text-center">
+		   <div class="chart col-sm-12 col-md-10 col-lg-5 text-center">
 			<canvas id="myChartAssists" width="400" height="400"></canvas>
 		   </div>
 		 </div>
@@ -80,16 +85,28 @@
 			<table id="users"></table>
 		  </div>
 		  <div class="cursor"></div>
+		  <!-- <div id="toast" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header">
+			  <img src="..." class="rounded me-2" alt="...">
+			  <strong class="me-auto">Manqué !!!</strong>
+			  
+			  <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+			  Retente ta chance, sois plus précis.
+			</div>
+		  </div> -->
 		 
 
 		
 
-
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.0.6/tsparticles.slim.bundle.min.js"></script>
 	<script type="module" src="./renderer/js/index.js"></script>
 	<script type="module" src="./renderer/js/test.js"></script>
+	<script src="./renderer/js/renderer.js"></script>
 	</body>
 </html>
 <!-- content="default-src 'self'; script-src 'self'" -->

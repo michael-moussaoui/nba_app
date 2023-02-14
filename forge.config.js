@@ -1,5 +1,7 @@
 module.exports = {
-	packagerConfig: {},
+	packagerConfig: {
+		icon: "logo_nba.ico",
+	},
 	rebuildConfig: {},
 	makers: [
 		{
@@ -30,7 +32,7 @@ module.exports = {
 					owner: "michael-moussaoui",
 					name: "nba_app",
 				},
-				authToken: "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",
+				authToken: "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",
 				prerelease: false,
 				draft: true,
 			},

@@ -23,3 +23,12 @@
 
 // console.log("hello");
 // document.getElementById("open_file").onclick = funcOfd;
+
+const NOTIFICATION_TITLE = "My NBA";
+const NOTIFICATION_BODY = "Suivez les stats de vos joueurs préférés";
+const CLICK_MESSAGE = "Panier marqué !!!";
+
+new Notification(NOTIFICATION_TITLE, {
+	body: NOTIFICATION_BODY,
+}).onclick = () =>
+	(document.getElementById("output").innerText = CLICK_MESSAGE);

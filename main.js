@@ -1,9 +1,15 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const {
+	app,
+	BrowserWindow,
+	ipcMain,
+	Notification,
+} = require("electron");
 
 const electronReload = require("electron-reload");
 
 const path = require("path");
 const url = require("url");
+
 if (require("electron-squirrel-startup")) return;
 require("update-electron-app")();
 
@@ -20,11 +26,25 @@ const createWindow = () => {
 			nodeIntegrationInWorker: true,
 			enableRemoteModule: true,
 		},
-		icon: path.join(__dirname, "renderer/images/logo_nba.ico"),
+		icon: path.join(__dirname, "./logo_nba.ico"),
 	});
 
 	win.loadFile(path.join(__dirname, "./index.html"));
 };
+
+// Notification.requestPermission().then((permission) => {
+// 	if (permission === "granted") {
+// 		const NOTIFICATION_TITLE = "Basic Notification";
+// 		const NOTIFICATION_BODY = "Notification from the Main process";
+
+// 		function showNotification() {
+// 			new Notification({
+// 				title: NOTIFICATION_TITLE,
+// 				body: NOTIFICATION_BODY,
+// 			}).show();
+// 		}
+// 	}
+// });
 
 app.whenReady().then(() => {
 	createWindow();

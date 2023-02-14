@@ -11,6 +11,7 @@ const ball = document.querySelector(".ball");
 const cursor = document.querySelector(".cursor");
 const cursorBis = document.querySelector(".cursorBis");
 const searchForm = document.querySelector("#searchForm");
+const inputBox = document.querySelector(".inputBox");
 const inputPlayer = document.querySelector("#inputPlayer");
 
 const options = {
@@ -46,7 +47,10 @@ const options = {
 		links: {
 			enable: true, // this enables links between particles
 			opacity: 0.3,
-			distance: 200,
+			distance: 190,
+		},
+		number: {
+			value: 90,
 		},
 		color: {
 			value: ["#4361ee"],
@@ -63,6 +67,15 @@ const options = {
 		},
 	},
 };
+
+// let toast = Toastify({
+// 	text: "Manqué... retente ta chance !",
+// 	duration: 2000,
+// 	style: {
+// 		background:
+// 			"linear-gradient(to right, rgba(31, 55, 171, 1), rgba(67, 97, 238, 1) ) ",
+// 	},
+// });
 
 let namePlayer = document.querySelector(".namePlayerStat");
 let myChart = null;
@@ -99,10 +112,14 @@ function searchPlayer() {
 			.then(async (res) => {
 				const players = res.data.data;
 				console.log(players);
-
-				await getPlayerStats(players[0].id);
-				await getAveragesPlayer(players[0].id);
-
+				//vérifie si la recherche ne renvoie pas un tableau vide
+				if (players.length === 0) {
+					inputPlayer.classList.add("shake-horizontal");
+					setTimeout(() => {
+						inputPlayer.value = "";
+						inputPlayer.classList.remove("shake-horizontal");
+					}, 1500);
+				}
 				console.log(players[0].team.abbreviation);
 
 				//On ajoute les joueurs trouvés au select
@@ -117,19 +134,24 @@ function searchPlayer() {
 				});
 
 				let output;
+				let playerId;
 				let namePlayerName = "";
+				let allNamesPlayerName = [];
 				players.forEach((player) => {
 					//Récupération du nom en abbréviation de l'équipe du joueur
 					let namePlayerTeam = player.team.abbreviation;
 					//Récupération du nom du joueur
-					namePlayerName = `${player.first_name} ${player.last_name}`;
+					namePlayerName = `${player.first_name}  ${player.last_name}`;
+					playerId = `${player.id}`;
 					console.log(namePlayerName);
 					console.log(player);
+
 					output += `
 					<swiper-slide>
 					<div class="cardPlayer">
 			          <div class="cardBody ">
-				        <h3 class="namePlayerCard" class="text-center">${namePlayerName}</h3>
+				        <h3 class="namePlayerCard">${namePlayerName}</h3>
+						<p class="idPlayer" >${playerId}</p>
 			           </div>
 			         <div class="containerImg">
 
@@ -139,16 +161,10 @@ function searchPlayer() {
 					</swiper-slide>`;
 
 					const cardPlayer = document.querySelector(".cardPlayer");
-
-					console.log(cardPlayer);
 				});
+				console.log(allNamesPlayerName);
 
-				// mainContainer.innerHTML = output;
 				swiper.innerHTML = output;
-
-				console.log(namePlayerName);
-
-				resultContainer.innerHTML = namePlayerName;
 			})
 			.catch((err) => console.log(err));
 	});
@@ -156,12 +172,11 @@ function searchPlayer() {
 
 searchPlayer();
 
-async function getPlayerStats(playerId) {
+async function getPlayerStats(cardClicked) {
 	try {
 		const response = await axios.get(
-			`https://www.balldontlie.io/api/v1/stats?seasons[]=2022&player_ids[]=${playerId}&per_page=20`
+			`https://www.balldontlie.io/api/v1/stats?seasons[]=2022&player_ids[]=${cardClicked}`
 		);
-		console.log(playerId);
 
 		{
 			const playerStats = response.data.data;
@@ -181,7 +196,9 @@ async function getPlayerStats(playerId) {
 			console.log(listAssists);
 			console.log(listDates);
 
+			// CHART points marqués par match sur une période prédéfinie
 			const ctx = document.getElementById("myChart").getContext("2d");
+			//Vérifie si un graphique existe
 			if (myChart != null) {
 				myChart.destroy();
 			}
@@ -233,13 +250,14 @@ async function getPlayerStats(playerId) {
 					},
 				},
 			});
+
+			// CHART rebonds par match sur une période prédéfinie
 			const ctxR = document
 				.getElementById("myChartRebounds")
 				.getContext("2d");
 			if (myChartRebounds != null) {
 				myChartRebounds.destroy();
 			}
-
 			myChartRebounds = new Chart(ctxR, {
 				type: "line",
 				data: {
@@ -287,6 +305,7 @@ async function getPlayerStats(playerId) {
 				},
 			});
 
+			// CHART passes décisives par match sur une période prédéfinie
 			const ctxA = document
 				.getElementById("myChartAssists")
 				.getContext("2d");
@@ -349,27 +368,33 @@ async function getPlayerStats(playerId) {
 
 getPlayerStats();
 
-async function getAveragesPlayer(playerId) {
-	console.log(playerId);
+function addPlayerAverages() {
+	// Ajoute la carte cliquée dans le tableau des moyennes de la saison en cours
+	document.addEventListener("click", (e) => {
+		const cardClicked = e.path[1].children[0].children[1].innerText;
+		const cardNamePlayer =
+			e.path[1].children[0].children[0].innerText;
+		console.log(cardClicked);
 
-	try {
-		const response = await axios.get(
-			`https://www.balldontlie.io/api/v1/season_averages?seasons[]=2022&player_ids[]=${playerId}`
-		);
-		{
-			const playerAverage = response.data.data[0];
-			console.log(playerAverage);
-			const playersAverage = response.data.data;
-			console.log(playerAverage);
-			let output1 = ``;
-			playersAverage.forEach((player) => {
-				let games = player.games_played;
-				let minutes = player.min;
-				let points = player.pts;
-				let rebonds = player.reb;
-				let assists = player.ast;
+		axios
+			.get(
+				`https://www.balldontlie.io/api/v1/season_averages?seasons[]=2022&player_ids[]=${cardClicked}`
+			)
+			.then(async (response) => {
+				await getPlayerStats(cardClicked);
+				const playerAverage = response.data.data[0];
+				console.log(playerAverage);
+				const playersAverage = response.data.data;
+				console.log(playerAverage);
+				let output1 = ``;
+				playersAverage.forEach((player) => {
+					let games = player.games_played;
+					let minutes = player.min;
+					let points = player.pts;
+					let rebonds = player.reb;
+					let assists = player.ast;
 
-				output1 += `
+					output1 += `
 				
 				<td>${games}</td>
 				<td>${minutes}</td>
@@ -378,13 +403,14 @@ async function getAveragesPlayer(playerId) {
 				<td>${assists}</td>
 				
 				`;
-			});
+				});
 
-			rowStats.innerHTML = output1;
-			console.log(output1);
-		}
-	} catch (error) {
-		console.log(error);
-	}
+				rowStats.innerHTML = output1;
+				resultContainer.innerHTML = cardNamePlayer;
+				console.log(output1);
+			})
+			.catch((err) => console.log(err));
+	});
 }
-getAveragesPlayer();
+
+addPlayerAverages();
